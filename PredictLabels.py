@@ -88,7 +88,6 @@ dataset = fo.load_dataset(datasetName)
 
 
 
-# Load the ONNX model
 model_path = "C:/Git/ml/models/OnnxModels/COCO/rtdetr_r101vd_2x_coco_objects365_from_paddle.onnx"
 session = ort.InferenceSession(
         model_path, providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
@@ -261,7 +260,6 @@ def handle_scores_tensor(scores_tensor):
 
 
 
-# Function to postprocess model output to FiftyOne Detections format
 def postprocess(outputs):
     boxes, labels, scores = outputs
     detections = []
@@ -285,21 +283,16 @@ def image_to_tensor_fp32(image):
     Returns:
         np.ndarray: A tensor of shape (1, 3, height, width).
     """
-    # Ensure the image is in RGB format
     image = image.convert('RGB')
     
-    # Get the image dimensions
     width, height = image.size
     
-    # Convert the image to a NumPy array and normalize pixel values to [0, 1]
     pixels = np.array(image, dtype=np.float32) / 255.0
     
-    # Separate the channels and reshape to (3, height, width)
     red_channel = pixels[:, :, 0]
     green_channel = pixels[:, :, 1]
     blue_channel = pixels[:, :, 2]
     
-    # Stack the channels into a single tensor and add the batch dimension
     data = np.stack([red_channel, green_channel, blue_channel], axis=0)
     data = np.expand_dims(data, axis=0)  # Shape: (1, 3, height, width)
     
@@ -316,17 +309,14 @@ def create_origin_target_size_tensor(batch_size=1):
     Returns:
         np.ndarray: A NumPy array of shape (batch_size, 2) with the specified dimensions.
     """
-    # Create an array of shape (batch_size, 2) filled with zeros and type int64
     orig_target_sizes = np.zeros((batch_size, 2), dtype=np.int64)
     
-    # Set the values for each sample in the batch
     for i in range(batch_size):
         orig_target_sizes[i, 0] = 640
         orig_target_sizes[i, 1] = 640
     
     return orig_target_sizes
 
-# Run inference and add predictions to the dataset
 sampleInDatasetCount = 0
 equalTo640 = 0
 lessThan640 = 0
@@ -348,10 +338,8 @@ for sample in dataset:
         tensor = image_to_tensor_fp32(image)
         orginTargetSize = create_origin_target_size_tensor(batch_size=1)
 
-        # Run model inference
         outputs = session.run(None, {"images": tensor, "orig_target_sizes": orginTargetSize})
 
-        # Extract model outputs
         labels = handle_labels_tensor(outputs[0])  
         boxes = handle_boxes_tensor(outputs[1])
         scores = handle_scores_tensor(outputs[2])

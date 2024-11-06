@@ -1,7 +1,6 @@
 import fiftyone as fo
 import fiftyone.utils.data.exporters as foude
-from fiftyone import ViewField as F
-import random
+
 
 export_dir = "C:/Git/ml/DataManagement/datasets/06/06_V7/Test(.2)"
 
@@ -23,12 +22,6 @@ foude.export_samples(
     dataset_type=fo.types.COCODetectionDataset,
     label_field=label_field,
 )
-
-
-
-
-
-
 
 '''''
 selection_probability = .6442 / 1.2083
@@ -54,5 +47,3 @@ with fo.ProgressBar() as pb:
         sample["TempExportLabels"] = fo.Detections(detections=detections)
         sample.save()
 '''
-
-

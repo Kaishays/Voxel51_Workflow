@@ -1,9 +1,7 @@
 import fiftyone as fo
-import fiftyone.core.labels as  fcl
-# Load the dataset
+
 dataset = fo.load_dataset("06_V7")
 
-# Define old and new class names
 old_class_name = "person"
 new_class_name = "car"
 label_field = "RT-DETR_Bootleg"
@@ -14,7 +12,7 @@ view = {
 )
 }
 print(len(view))
-# Iterate through samples and rename class
+
 count = 0
 for sample in view:
     count += 1 

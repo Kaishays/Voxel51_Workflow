@@ -7,29 +7,14 @@ max_uniqueness = 1
 
 
 dataset = fo.load_dataset("06_V7")
-#tag_name = "duplicate"
 
-#dataset.delete_labels(tags=tag_name)
 
 if __name__ == "__main__":
         session = fo.launch_app(dataset)
         session.wait()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#label_field = "detections"  # The field that contains annotations
-#label_value = "car"            # The specific label you want to filter for
+#label_field = "detections"  
+#label_value = "car"            
 
 # Create a view that only contains samples with the specified label
 '''''
@@ -44,7 +29,6 @@ view = (
 .sort_by("uniqueness", reverse=True)
 '''
 
-#outputPath = "C:/Git/ml/DataManagement/datasets/06_V3 Bootleg/Train_Val_Final_AllTogether"
 
 
 '''''

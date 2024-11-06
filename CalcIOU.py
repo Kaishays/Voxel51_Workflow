@@ -61,6 +61,3 @@ print(dataset)
 for sample in view: 
     print(sample[IouDetField])
 print("IoU computation and attribute update completed.")
-
-
-
