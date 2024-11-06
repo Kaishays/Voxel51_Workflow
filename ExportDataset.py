@@ -3,19 +3,34 @@ import fiftyone.utils.data.exporters as foude
 from fiftyone import ViewField as F
 import random
 
-export_dir = "C:/Git/ml/DataManagement/datasets/06_V5_Temp"
-#export_dir = "C:/Git/ml/DataManagement/datasets/06_V3 Bootleg/Train_NoBuildingClass"
+export_dir = "C:/Git/ml/DataManagement/datasets/06/06_V7/Test(.2)"
 
-dataset_name = "06_V3"
-label_field = "TempExportLabels"
+dataset_name = "06_V7"
+label_field = "GTV1_BL1_101COCO" 
 
 dataset = fo.load_dataset(dataset_name)
-
+saved_view_name = "GTV1_BL1_101COCO Final"
+#"trainV2","fiV2","valV2"
 view = (
     dataset
-    .match_tags(["Car", "Building", "Person", "IR", "Low bitrate"], bool=False, all = False)
-    #.match(F(label_field).exists())
+    .load_saved_view(saved_view_name)
+    .match_tags(["testV2"], bool=True, all = False) 
 )
+print(len(view))
+foude.export_samples(
+    samples=view,
+    export_dir=export_dir,
+    dataset_type=fo.types.COCODetectionDataset,
+    label_field=label_field,
+)
+
+
+
+
+
+
+
+'''''
 selection_probability = .6442 / 1.2083
 total_samples = len(view)
 print(total_samples)
@@ -38,11 +53,6 @@ with fo.ProgressBar() as pb:
         detections.append(detection)
         sample["TempExportLabels"] = fo.Detections(detections=detections)
         sample.save()
+'''
 
 
-foude.export_samples(
-    samples=random_view,
-    export_dir=export_dir,
-    dataset_type=fo.types.COCODetectionDataset,
-    label_field=label_field,
-)
